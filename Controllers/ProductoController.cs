@@ -20,10 +20,38 @@ namespace Api_Mvc.Controllers
         public IActionResult Index()
         {
             //Regresa una vista
+            //Simula recoger los datos de una base de datos
             var productos = GetData();
             return View(productos);
-            //return View();
+            //En este caso le estamos pasando los datos a la vista
+            //como un arreglo, coleccion de productos,
         }
+        //Viste de Create
+        //Localhost/producto/create
+        //Metodo GET que devuelve una vista
+        //Toma todos los campos que se carguen en la vista y se los manda al controlador
+        public IActionResult Create()
+        {
+            return View();
+        }
+        //Se tiene que llamar igal al metodo
+        //Metodo POST
+        //Localhost/producto/Create
+        [HttpPost]
+        public IActionResult Create(Producto producto)
+        {
+            if(producto == null)
+                ViewBag.Message="Hubo un error al guardar el producto";           
+            else
+                ViewBag.Message="Los datos del producto se guardaron correctamente"; 
+
+            return View(producto);
+        }
+
+
+
+
+
 
         // Metodo del controladr que devuelve los datos de un producto
         
@@ -75,6 +103,8 @@ namespace Api_Mvc.Controllers
 
                 return productos;
                 
-        } 
+        }
+
+
     }
 }

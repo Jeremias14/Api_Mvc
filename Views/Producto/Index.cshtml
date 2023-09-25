@@ -1,5 +1,7 @@
 <!--El cshtml me recone que es blazor-->
-
+<!--Le decimos que va a recibir una coleccion de productos
+    que es la que se encuentra en el controlador
+-->
 @model IEnumerable<Api_Mvc.Models.Producto>
 
 <p>Esta vista es el controlador Producto</p>
@@ -21,6 +23,9 @@
                     Fecha de alta
                 </th>
                 <tbody>
+                    <!--Para cada producto que esta en la coleccion producto solicito esta info
+                        chequear producto.Informacion que necesito
+                    -->
                         @foreach (Api_Mvc.Models.Producto producto in @Model)
                         {
                             <tr>
