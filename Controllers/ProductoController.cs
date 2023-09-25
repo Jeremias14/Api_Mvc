@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Api_Mvc.Data;
 using Api_Mvc.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SQLitePCL;
 using WebApiMvc.Models;
 
 
@@ -14,47 +16,45 @@ namespace Api_Mvc.Controllers
     
     public class ProductoController : Controller
     {
+        //Inyectamos desde la base de datos
+        private readonly ProductosContext _context;
+        public ProductoController(ProductosContext context)
+        {
+            _context = context;
+        }
        
         public List<Producto>? Productos { get; set; }
         //Este metodo me devuelve una vista
         public IActionResult Index()
         {
-            //Regresa una vista
-            //Simula recoger los datos de una base de datos
             var productos = GetData();
             return View(productos);
-            //En este caso le estamos pasando los datos a la vista
-            //como un arreglo, coleccion de productos,
         }
-        //Viste de Create
+        //Metodo GET 
         //Localhost/producto/create
-        //Metodo GET que devuelve una vista
-        //Toma todos los campos que se carguen en la vista y se los manda al controlador
         public IActionResult Create()
         {
             return View();
         }
-        //Se tiene que llamar igal al metodo
         //Metodo POST
         //Localhost/producto/Create
         [HttpPost]
-        public IActionResult Create(Producto producto)
+        public async Task<IActionResult> Create(Producto producto)
         {
-            if(producto == null)
-                ViewBag.Message="Hubo un error al guardar el producto";           
-            else
-                ViewBag.Message="Los datos del producto se guardaron correctamente"; 
-
+            if(ModelState.IsValid)
+            {
+                //Agregamos logica para guardar en la base de datos
+                //Internamente reconoce a la clase que viene por parametros
+                //y reconece el Context que viene de DbSet<Producto>
+                _context.Add(producto);
+                await _context.SaveChangesAsync();
+                //Redireccionamos para que se vaya al Index del controlador
+                return RedirectToAction(nameof(Index));
+            }
+            
             return View(producto);
         }
-
-
-
-
-
-
         // Metodo del controladr que devuelve los datos de un producto
-        
         public List<Producto> GetData()
         {
             List<Producto> productos = new List<Producto>();
