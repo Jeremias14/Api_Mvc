@@ -1,0 +1,38 @@
+<!--El cshtml me recone que es blazor-->
+
+@model IEnumerable<Api_Mvc.Models.Producto>
+
+<p>Esta vista es el controlador Producto</p>
+<h>Productos</h>
+<div>
+    <table class ="table">
+        <th>
+            <tr>
+                <th>
+                    Nombre
+                </th>
+                <th>
+                    Descripcion
+                </th>
+                <th>
+                    Precio
+                </th>
+                <th>
+                    Fecha de alta
+                </th>
+                <tbody>
+                        @foreach (Api_Mvc.Models.Producto producto in @Model)
+                        {
+                            <tr>
+                                <td>@producto.Nombre</td>
+                                <td>@producto.Descripcion</td>
+                                <td>@producto.Precio</td>
+                                <td>@producto.FechaDeAlta</td>
+                            </tr>
+                        }
+                </tbody>
+            </tr>
+        </th>
+
+    </table>
+</div>
