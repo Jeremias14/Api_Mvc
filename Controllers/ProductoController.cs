@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Api_Mvc.Data;
 using Api_Mvc.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SQLitePCL;
 using WebApiMvc.Models;
@@ -25,9 +26,10 @@ namespace Api_Mvc.Controllers
        
         public List<Producto>? Productos { get; set; }
         //Este metodo me devuelve una vista
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var productos = GetData();
+            //Trae lo que tengamos en la base de datos
+            var productos = await _context.Productos.ToListAsync();
             return View(productos);
         }
         //Metodo GET 
@@ -43,12 +45,10 @@ namespace Api_Mvc.Controllers
         {
             if(ModelState.IsValid)
             {
-                //Agregamos logica para guardar en la base de datos
-                //Internamente reconoce a la clase que viene por parametros
-                //y reconece el Context que viene de DbSet<Producto>
+                //DbSet<Producto>
                 _context.Add(producto);
                 await _context.SaveChangesAsync();
-                //Redireccionamos para que se vaya al Index del controlador
+        
                 return RedirectToAction(nameof(Index));
             }
             
