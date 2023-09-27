@@ -1,0 +1,33 @@
+@model Api_Mvc.Models.Producto
+
+@{
+    ViewData["Title"] = "Borrar producto";
+}
+
+<div>
+    <p>@ViewBag.Message</p>
+</div>
+
+<h3> Confirmar borrado del producto</h3>
+
+<div>
+    <dl class="row">
+        <dt>
+            @Html.DisplayNameFor( model => model.Nombre)
+        </dt>
+        <dt>
+            @Html.DisplayNameFor( model => model.Descripcion)
+        </dt>
+        <dt>
+            @Html.DisplayNameFor( model => model.Precio)
+        </dt>
+        <dt>
+            @Html.DisplayNameFor( model => model.FechaDeAlta)
+        </dt>
+    </dl>
+</div>
+<!-- Nombre del metodo va con asp-action-->
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id"/>
+    <input type="submit" value="Borrar" class="btn btn-primary"/>
+</form>

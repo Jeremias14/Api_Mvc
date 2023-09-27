@@ -51,8 +51,22 @@ namespace Api_Mvc.Controllers
                 return NotFound();
             
             return View(producto);
-            //Otra forma de escribir el metodo para editar\
-            // var producto1 = await _context.Productos.FirstOrDefaultAsync(p => p.Id ==id)
+            
+
+        }
+        [HttpGet]
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            if(id==0)
+                return NotFound();
+            //Nos devuelve el
+            var producto = await _context.Productos.FindAsync(id);
+            if(producto == null)
+                return NotFound();
+            
+            return View(producto);
+            
 
         }
 
@@ -76,9 +90,39 @@ namespace Api_Mvc.Controllers
         }
 
         //Metodo POST
-        //Localhost/producto/Edit/id
+        //Localhost/producto/Delete/id
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirm(int id)
+        {
+            
+            var producto = await _context.Productos.FindAsync(id);
+            _context.Productos.Remove(producto);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+    
+        }
         [HttpPost]
         public async Task<IActionResult> Edit(int id, Producto producto)
+        {
+            if(id != producto.Id)
+                return NotFound();
+            //Guardamos los cambios del edit
+            if(ModelState.IsValid)
+            {
+                producto.FechaDeAlta = DateTime.Now;
+                _context.Update(producto);
+                await _context.SaveChangesAsync();
+                //Redireccion a index
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(producto);
+        }
+
+        //Metodo Delete
+        //Localhost/producto/Delete/id
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id, Producto producto)
         {
             if(id != producto.Id)
                 return NotFound();
