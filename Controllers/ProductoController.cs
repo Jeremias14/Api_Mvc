@@ -38,73 +38,61 @@ namespace Api_Mvc.Controllers
         {
             return View();
         }
+        // Metodo GET localhost/Producto/Edit
+        // Metodo para editar un producto
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            if(id==0)
+                return NotFound();
+            //Nos devuelve el
+            var producto = await _context.Productos.FindAsync(id);
+            if(producto == null)
+                return NotFound();
+            
+            return View(producto);
+            //Otra forma de escribir el metodo para editar\
+            // var producto1 = await _context.Productos.FirstOrDefaultAsync(p => p.Id ==id)
+
+        }
+
         //Metodo POST
         //Localhost/producto/Create
         [HttpPost]
         public async Task<IActionResult> Create(Producto producto)
         {
+            //Se Valida el producto que se va a agregar
             if(ModelState.IsValid)
             {
                 //DbSet<Producto>
+                producto.FechaDeAlta = DateTime.Now;
                 _context.Add(producto);
                 await _context.SaveChangesAsync();
-        
+                //Redireccion a index
                 return RedirectToAction(nameof(Index));
             }
             
             return View(producto);
         }
-        // Metodo del controladr que devuelve los datos de un producto
-        public List<Producto> GetData()
+
+        //Metodo POST
+        //Localhost/producto/Edit/id
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, Producto producto)
         {
-            List<Producto> productos = new List<Producto>();
-            productos.Add(new Producto{
-                Id=1,
-                Nombre = "Coca-cola",
-                Descripcion ="Gaseosa",
-                Precio = 850.00m,
-                Activo=true,
-                FechaDeAlta = DateTime.Now.AddDays(-1)});
-                productos.Add(new Producto{
-                Id=2,
-                Nombre = "Cafe Juan Valdez",
-                Descripcion ="Cafe",
-                Precio = 180.00m,
-                Activo=true,
-                FechaDeAlta = DateTime.Now.AddDays(-1)});
-                productos.Add(new Producto{
-                Id=3,
-                Nombre = "Cafe fiero",
-                Descripcion ="Cafe",
-                Precio = 20.00m,
-                Activo=true,
-                FechaDeAlta = DateTime.Now.AddDays(-1)});
-                productos.Add(new Producto{
-                Id=3,
-                Nombre = "IPA VERA",
-                Descripcion ="Cerveza",
-                Precio = 900.00m,
-                Activo=true,
-                FechaDeAlta = DateTime.Now.AddDays(-1)});
-                productos.Add(new Producto{
-                Id=4,
-                Nombre = "Agua Villacencio",
-                Descripcion ="Agua",
-                Precio = 450.00m,
-                Activo=true,
-                FechaDeAlta = DateTime.Now.AddDays(-1)});
-                productos.Add(new Producto{
-                Id=5,
-                Nombre = "Leche milca",
-                Descripcion ="Leche",
-                Precio = 250.00m,
-                Activo=true,
-                FechaDeAlta = DateTime.Now.AddDays(-1)});
+            if(id != producto.Id)
+                return NotFound();
+            //Guardamos los cambios del edit
+            if(ModelState.IsValid)
+            {
+                producto.FechaDeAlta = DateTime.Now;
+                _context.Update(producto);
+                await _context.SaveChangesAsync();
+                //Redireccion a index
+                return RedirectToAction(nameof(Index));
+            }
 
-                return productos;
-                
+            return View(producto);
         }
-
-
     }
 }
