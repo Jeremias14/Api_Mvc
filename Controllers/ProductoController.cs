@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Api_Mvc.Data;
 using Api_Mvc.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using SQLitePCL;
 using WebApiMvc.Models;
 
 
@@ -14,19 +17,44 @@ namespace Api_Mvc.Controllers
     
     public class ProductoController : Controller
     {
+        //Inyectamos desde la base de datos
+        private readonly ProductosContext _context;
+        public ProductoController(ProductosContext context)
+        {
+            _context = context;
+        }
        
         public List<Producto>? Productos { get; set; }
         //Este metodo me devuelve una vista
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            //Regresa una vista
-            var productos = GetData();
+            //Trae lo que tengamos en la base de datos
+            var productos = await _context.Productos.ToListAsync();
             return View(productos);
-            //return View();
         }
-
-        // Metodo del controladr que devuelve los datos de un producto
+        //Metodo GET 
+        //Localhost/producto/create
+        public IActionResult Create()
+        {
+            return View();
+        }
+        //Metodo POST
+        //Localhost/producto/Create
+        [HttpPost]
+        public async Task<IActionResult> Create(Producto producto)
+        {
+            if(ModelState.IsValid)
+            {
+                //DbSet<Producto>
+                _context.Add(producto);
+                await _context.SaveChangesAsync();
         
+                return RedirectToAction(nameof(Index));
+            }
+            
+            return View(producto);
+        }
+        // Metodo del controladr que devuelve los datos de un producto
         public List<Producto> GetData()
         {
             List<Producto> productos = new List<Producto>();
@@ -75,6 +103,8 @@ namespace Api_Mvc.Controllers
 
                 return productos;
                 
-        } 
+        }
+
+
     }
 }
