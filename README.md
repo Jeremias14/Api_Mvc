@@ -26,8 +26,13 @@ Paquetes nuget que se estan utilizando:
 *Entity Framework*
 
 - dotnet ef migrations add "Nombre de la migracion" -> Este comanmdo me crea la carpeta de migraciones
+***OJO***
+Cuando se haga la configuracion del connectionstring en el Archivo Programs.cs tiene que tener el var app = builder.Build(); tiene que estar debajo del conecttionString 
+Fuente:
+-> https://stackoverflow.com/questions/69959028/net-core-6-unable-to-resolve-service-for-type-while-attempting-to-activate
 
 
+-  dotnet ef database update "Nombre de la migracion" -> Me crea la base de datos 
 
 
 

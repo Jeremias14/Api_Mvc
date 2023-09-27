@@ -16,8 +16,8 @@ namespace Api_Mvc.Data
             //Inyectamos nuestras dependecias 
         }
         //Tabla de donde saca los datos
-        public DbSet<Producto>? Productos { get; set; }
-        public DbSet<Usuario>? Usuarios { get; set; }
+        public DbSet<Api_Mvc.Models.Producto> Productos { get; set; }
+        public DbSet<Api_Mvc.Models.Usuario> Usuarios { get; set; }
 
     }
 }
