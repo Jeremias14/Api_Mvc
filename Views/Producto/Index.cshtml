@@ -2,7 +2,10 @@
 @{
     ViewData["Title"] = "Productos";
 }
-
+<!--asp-action llama al metodo que implementamos en el controlador-->
+<p>
+    <a asp-action="Create">Agregar producto</a>
+</p>
 
 <div>
     <table class ="table">
@@ -23,6 +26,10 @@
                 <th>
                     @Html.DisplayNameFor(model => model.FechaDeAlta)
                 </th>
+                <th>
+                    Options
+                </th>
+                
                 <tbody>
                     <!--Para cada producto que esta en la coleccion producto solicito esta info
                         chequear producto.Informacion que necesito
@@ -35,6 +42,10 @@
                                 <td>@Html.DisplayFor(modelItem => producto.Precio)</td>
                                 <td>@Html.DisplayFor(modelItem => producto.Activo)</td>
                                 <td>@Html.DisplayFor(modelItem => producto.FechaDeAlta)</td>
+                            <td>
+                                <a asp-action ="Edit" asp-route-id="@producto.Id">Editar</a>
+                                <a asp-action ="Delete" asp-route-id="@producto.Id">Borrar</a>
+                            </td>
                             </tr>
                         }
                 </tbody>
