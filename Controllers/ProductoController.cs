@@ -54,20 +54,18 @@ namespace Api_Mvc.Controllers
             
 
         }
-        [HttpGet]
-
+        //Metodo GET GET localhost/Producto/Delete/id
+        //Regresamos el producto
         public async Task<IActionResult> Delete(int id)
         {
             if(id==0)
                 return NotFound();
-            //Nos devuelve el
+            
             var producto = await _context.Productos.FindAsync(id);
             if(producto == null)
                 return NotFound();
             
             return View(producto);
-            
-
         }
 
         //Metodo POST
@@ -88,19 +86,8 @@ namespace Api_Mvc.Controllers
             
             return View(producto);
         }
-
         //Metodo POST
-        //Localhost/producto/Delete/id
-        [HttpPost, ActionName("Delete")]
-        public async Task<IActionResult> DeleteConfirm(int id)
-        {
-            
-            var producto = await _context.Productos.FindAsync(id);
-            _context.Productos.Remove(producto);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-    
-        }
+        //Localhost/producto/Edit/id
         [HttpPost]
         public async Task<IActionResult> Edit(int id, Producto producto)
         {
@@ -118,25 +105,18 @@ namespace Api_Mvc.Controllers
 
             return View(producto);
         }
-
-        //Metodo Delete
+        //Metodo POST
         //Localhost/producto/Delete/id
-        [HttpPost]
-        public async Task<IActionResult> Delete(int id, Producto producto)
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirm(int id)
         {
-            if(id != producto.Id)
-                return NotFound();
-            //Guardamos los cambios del edit
-            if(ModelState.IsValid)
-            {
-                producto.FechaDeAlta = DateTime.Now;
-                _context.Update(producto);
-                await _context.SaveChangesAsync();
-                //Redireccion a index
-                return RedirectToAction(nameof(Index));
-            }
-
-            return View(producto);
+            
+            var producto = await _context.Productos.FindAsync(id);
+            _context.Productos.Remove(producto);
+            await _context.SaveChangesAsync();
+            
+            return RedirectToAction(nameof(Index));
+    
         }
     }
 }

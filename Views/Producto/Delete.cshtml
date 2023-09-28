@@ -8,21 +8,34 @@
     <p>@ViewBag.Message</p>
 </div>
 
-<h3> Confirmar borrado del producto</h3>
+<h3>Esta seguro que quiere borrar el producto?</h3>
 
+<!-- Nombre del metodo va con asp-action-->
 <div>
     <dl class="row">
         <dt>
             @Html.DisplayNameFor( model => model.Nombre)
         </dt>
         <dt>
+            @Html.DisplayFor( model => model.Nombre)
+        </dt>
+        <dt>
             @Html.DisplayNameFor( model => model.Descripcion)
+        </dt>
+        <dt>
+            @Html.DisplayFor( model => model.Descripcion)
         </dt>
         <dt>
             @Html.DisplayNameFor( model => model.Precio)
         </dt>
         <dt>
+            @Html.DisplayFor( model => model.Precio)
+        </dt>
+        <dt>
             @Html.DisplayNameFor( model => model.FechaDeAlta)
+        </dt>
+        <dt>
+            @Html.DisplayFor( model => model.FechaDeAlta)
         </dt>
     </dl>
 </div>
